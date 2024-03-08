@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { NextUIProvider } from "@nextui-org/react";
 import { Providers } from "./providers";
+import { Spinner } from "@nextui-org/react";
+import { Suspense } from "react";
+
+import NavBar from "@autentication/components/navBar/NavBar";
+
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        {/* <NextUIProvider> */}
+        <header>
+          <NavBar />
+        </header>
         <Providers>{children}</Providers>
-        {/* </NextUIProvider> */}
+        <footer></footer>
       </body>
     </html>
   );
