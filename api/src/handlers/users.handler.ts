@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { getErrorMessage } from "../utils/errors";
+import { serialize } from "cookie";
+
 import getUsersController from "../controllers/users/getUsers.controller";
 import registerUserController from "../controllers/users/registerUser.controller";
 import loginUserController from "../controllers/users/loginUser.controller";
@@ -86,9 +88,21 @@ export const loginUserHandler = async (req: Request, res: Response) => {
 
     if (!username || !email || !password) throw new Error("Missing data");
 
-    const user = await loginUserController(username, email, password);
+    const userToken = await loginUserController(username, email, password);
 
-    return res.status(200).json(user);
+    if (!userToken) throw new Error("error");
+
+    const serialized = serialize("videogames_session_token", userToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24,
+      path: "/",
+    });
+
+    return res
+      .setHeader("Set-Cookie", serialized)
+      .json({ message: "Login succesfully" });
   } catch (error) {
     return res.status(500).json({ error: getErrorMessage(error) });
   }
