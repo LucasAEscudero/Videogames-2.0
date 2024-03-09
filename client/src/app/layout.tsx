@@ -4,7 +4,7 @@ import { Providers } from "./providers";
 import { Spinner } from "@nextui-org/react";
 import { Suspense } from "react";
 
-import NavBar from "@autentication/components/navBar/NavBar";
+import NavBar from "@/components/navBar/NavBar";
 
 import "./globals.css";
 
@@ -26,7 +26,9 @@ export default function RootLayout({
         <header>
           <NavBar />
         </header>
-        <Providers>{children}</Providers>
+        <Providers>
+          <main className="mx-5 mt-3">{children}</main>
+        </Providers>
         <footer></footer>
       </body>
     </html>
