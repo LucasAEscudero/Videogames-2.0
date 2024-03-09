@@ -1,3 +1,27 @@
+export class ClientError extends Error {
+  statusCode: number;
+  constructor(message: string | undefined, status = 400) {
+    super(message);
+    this.statusCode = status;
+  }
+}
+
+export class FetchError extends Error {
+  statusCode: number;
+  constructor(message: string | undefined, status = 500) {
+    super(message);
+    this.statusCode = status;
+  }
+}
+
+export class AuthenticationError extends Error {
+  statusCode: number;
+  constructor(message: string | undefined, status = 400) {
+    super(message);
+    this.statusCode = status;
+  }
+}
+
 export const getErrorMessage = (error: unknown): string => {
   let message: string;
 

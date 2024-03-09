@@ -1,12 +1,18 @@
-import { Request, Response } from "express";
-import getPlatformsController from "../controllers/platforms/getPlatforms.controller";
+import { NextFunction, Request, Response } from "express";
+import { responseData } from "../utils/response";
 
-export const getPlatformsHandler = async (_req: Request, res: Response) => {
+import getPlatformsController from "../controllers/getPlatforms.controller";
+
+export const getPlatformsHandler = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const platforms = await getPlatformsController();
 
-    return res.status(200).json(platforms);
+    return responseData(res, 200, platforms);
   } catch (error) {
-    return res.status(500).json(error);
+    return next(error);
   }
 };

@@ -1,6 +1,7 @@
-import { Request, Response } from "express";
-import { getErrorMessage } from "../utils/errors";
+import { NextFunction, Request, Response } from "express";
 import { serialize } from "cookie";
+import { responseData, responseMessage } from "../utils/response";
+import { ClientError } from "../utils/errors";
 
 import getUsersController from "../controllers/users/getUsers.controller";
 import registerUserController from "../controllers/users/registerUser.controller";
@@ -10,87 +11,113 @@ import deleteUserController from "../controllers/users/deleteUser.controller";
 import postUserVideogameController from "../controllers/users/postUserVideogame.controller";
 
 // users
-export const getUsersHandler = async (_req: Request, res: Response) => {
+export const getUsersHandler = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const users = await getUsersController();
 
-    return res.status(200).json(users);
+    return responseData(res, 200, users);
   } catch (error) {
-    return res.status(500).json({ error: getErrorMessage(error) });
+    return next(error);
   }
 };
 
-export const putUserHandler = async (req: Request, res: Response) => {
+export const putUserHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { id, username, email, password } = req.body;
 
     if (!id || !username || !email || !password)
-      throw new Error("Missing data");
+      throw new ClientError("Missing data");
 
     await putUserController(id, username, email, password);
 
-    return res.status(200).json({ message: "The user has been edited" });
+    return responseMessage(res, 200, "The user has been edited succesfully");
   } catch (error) {
-    return res.status(500).json({ error: getErrorMessage(error) });
+    return next(error);
   }
 };
 
-export const deleteUserHandler = async (req: Request, res: Response) => {
+export const deleteUserHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { id } = req.params;
 
-    if (!id) throw new Error("Missing id");
+    if (!id) throw new ClientError("Missing id");
 
     await deleteUserController(id);
 
-    return res.status(200).json({ message: "The user has been deleted" });
+    return responseMessage(res, 200, "The user has been deleted succesfully");
   } catch (error) {
-    return res.status(500).json({ error: getErrorMessage(error) });
+    return next(error);
   }
 };
 
-export const postUserVideogameHandler = async (req: Request, res: Response) => {
+export const postUserVideogameHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { id, videogameId } = req.body;
 
-    const { error } = await postUserVideogameController(id, videogameId);
+    await postUserVideogameController(id, videogameId);
 
-    if (error) res.status(400).send("The user was not finded");
-
-    return res
-      .status(201)
-      .send(`The game with the id ${videogameId} was added at user library`);
+    return responseMessage(
+      res,
+      201,
+      `The game with the id ${videogameId} was added at user library`
+    );
   } catch (error) {
-    return res.status(500).json({ error: getErrorMessage(error) });
+    return next(error);
   }
 };
 
 // authentication
-export const registerUserHandler = async (req: Request, res: Response) => {
+export const registerUserHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { username, email, password } = req.body;
 
-    if (!username || !email || !password) throw new Error("Missing data");
+    if (!username || !email || !password) throw new ClientError("Missing data");
 
     const userCreated = await registerUserController(username, email, password);
 
-    return res.status(201).json({
-      message: `The user ${userCreated.username} with the email ${userCreated.email} has been created`,
-    });
+    return responseMessage(
+      res,
+      201,
+      `The user ${userCreated.username} with the email ${userCreated.email} has been created`
+    );
   } catch (error) {
-    return res.status(500).json({ error: getErrorMessage(error) });
+    return next(error);
   }
 };
 
-export const loginUserHandler = async (req: Request, res: Response) => {
+export const loginUserHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { username, email, password } = req.body;
 
-    if (!username || !email || !password) throw new Error("Missing data");
+    if (!username || !email || !password) throw new ClientError("Missing data");
 
     const userToken = await loginUserController(username, email, password);
 
-    if (!userToken) throw new Error("error");
+    if (!userToken) throw new Error("Token could not to be generated");
 
     const serialized = serialize("videogames_session_token", userToken, {
       httpOnly: true,
@@ -100,10 +127,9 @@ export const loginUserHandler = async (req: Request, res: Response) => {
       path: "/",
     });
 
-    return res
-      .setHeader("Set-Cookie", serialized)
-      .json({ message: "Login succesfully" });
+    res.setHeader("Set-Cookie", serialized);
+    return responseMessage(res, 200, "Login succesfully");
   } catch (error) {
-    return res.status(500).json({ error: getErrorMessage(error) });
+    return next(error);
   }
 };

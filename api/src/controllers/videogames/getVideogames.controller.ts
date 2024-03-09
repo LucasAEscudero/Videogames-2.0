@@ -1,15 +1,17 @@
 import axios from "axios";
-import { videogamesResponseType } from "../../utils/types";
-import { createVideogamesArrayResponse } from "../../utils/createResponse";
+import { FetchError } from "../../utils/errors";
+import { formatVideogames } from "../../utils/formatVideogames";
+
+import { fetchApiVideogamesType } from "../../utils/types";
 
 export default async function getVideogamesController(page: number) {
-  const videogamesApi = (
+  const apiData = (
     await axios.get(`/games?key=${process.env.API_KEY}&page=${page}`)
-  ).data as videogamesResponseType;
+  ).data as fetchApiVideogamesType;
 
-  return {
-    next: videogamesApi.next ? true : false,
-    previous: videogamesApi.previous ? true : false,
-    results: createVideogamesArrayResponse(videogamesApi.results),
-  };
+  if (!apiData) throw new FetchError("Error to fetch videogames data", 404);
+
+  return apiData.results.map((videogame) => {
+    return formatVideogames(videogame);
+  });
 }

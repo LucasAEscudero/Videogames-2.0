@@ -1,5 +1,6 @@
 import Users from "../../models/users.model";
 import { generateToken } from "../../utils/jwt";
+import { ClientError } from "../../utils/errors";
 
 export default async function loginUserController(
   username: string,
@@ -14,6 +15,6 @@ export default async function loginUserController(
     },
   });
 
-  if (!user) throw new Error("The user was not finded");
+  if (!user) throw new ClientError("This user not exist", 404);
   else return generateToken({ id: user.id, username, email });
 }

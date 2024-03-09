@@ -1,4 +1,5 @@
 import Users from "../../models/users.model";
+import { ClientError } from "../../utils/errors";
 
 export default async function putUserController(
   id: string,
@@ -8,7 +9,7 @@ export default async function putUserController(
 ) {
   const userData = await Users.findOne({ where: { id } });
 
-  if (!userData) throw new Error("The user could not be edited");
+  if (!userData) throw new ClientError("The user with this id not exist", 404);
 
   userData.set({
     username,

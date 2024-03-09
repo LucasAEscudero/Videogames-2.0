@@ -41,11 +41,6 @@ class Users extends Model {
   @Column({
     type: DataType.ARRAY(DataType.STRING),
   })
-  videogames_created!: string[];
-
-  @Column({
-    type: DataType.ARRAY(DataType.STRING),
-  })
   library!: string[];
 }
 

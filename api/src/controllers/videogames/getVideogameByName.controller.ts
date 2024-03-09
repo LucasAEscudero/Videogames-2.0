@@ -1,15 +1,17 @@
 import axios from "axios";
-import { videogamesResponseType, videogameType } from "../../utils/types";
-import { createVideogamesArrayResponse } from "../../utils/createResponse";
+import { FetchError } from "../../utils/errors";
+import { formatVideogames } from "../../utils/formatVideogames";
+
+import { fetchApiVideogamesType } from "../../utils/types";
 
 export default async function getVideogameByNameController(name: string) {
-  const videogamesResponse = (
+  const apiData = (
     await axios.get(`/games?key=${process.env.API_KEY}&search=${name}`)
-  ).data as videogamesResponseType;
+  ).data as fetchApiVideogamesType;
 
-  const videogames: videogameType[] = createVideogamesArrayResponse(
-    videogamesResponse.results
-  );
+  if (!apiData) throw new FetchError("Error to fetch videogames data", 404);
 
-  return videogames;
+  return apiData.results.map((videogame) => {
+    return formatVideogames(videogame);
+  });
 }

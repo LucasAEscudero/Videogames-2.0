@@ -1,4 +1,5 @@
 import Users from "../../models/users.model";
+import { ClientError } from "../../utils/errors";
 
 export default async function postUserVideogameController(
   id: string,
@@ -8,7 +9,7 @@ export default async function postUserVideogameController(
     where: { id },
   });
 
-  if (!user) return { error: true };
+  if (!user) throw new ClientError("Not exist an user with this id", 404);
 
   if (!user.library) user.set({ library: [newVideogameId] });
   else {

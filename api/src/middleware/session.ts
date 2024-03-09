@@ -2,6 +2,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { verifyToken } from "../utils/jwt";
 import { Request, Response, NextFunction } from "express";
 import { getErrorName } from "../utils/errors";
+import { errorResponse } from "../utils/response";
 
 export const checkToken = (
   req: Request & { user?: JwtPayload | string },
@@ -18,9 +19,10 @@ export const checkToken = (
     next();
   } catch (error) {
     const name: string = getErrorName(error);
-    if (name === "TokenExpiredError") res.status(401).send("Session expired");
+    if (name === "TokenExpiredError")
+      errorResponse(res, 401, "Session expired");
     else if (name === "JsonWebTokenError")
-      res.status(401).send("Invalid token");
-    else res.status(400).send("Invalid session");
+      errorResponse(res, 401, "Invalid token");
+    else errorResponse(res, 400, "Invalid session");
   }
 };

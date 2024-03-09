@@ -1,5 +1,6 @@
 import { Op } from "sequelize";
 import Users from "../../models/users.model";
+import { ClientError } from "../../utils/errors";
 
 export default async function registerUserController(
   username: string,
@@ -12,9 +13,9 @@ export default async function registerUserController(
 
   if (alreadyExists) {
     if (alreadyExists.username === username)
-      throw new Error(`The username ${username} already exists`);
+      throw new ClientError(`The username ${username} already exists`);
     else if (alreadyExists.email === email)
-      throw new Error(`The email ${email} already exists`);
+      throw new ClientError(`The email ${email} already exists`);
   }
 
   const userCreated = await Users.create({
