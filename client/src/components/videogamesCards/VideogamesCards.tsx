@@ -9,8 +9,8 @@ interface VideogamesCardsProps {
 
 export default function VideogamesCards({ videogames }: VideogamesCardsProps) {
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-start justify-center justify-items-center my-5">
-      {videogames.map((videogame: videogameType, i: number) => (
+    <section className="flex flex-wrap gap-5 items-start justify-center justify-items-center my-5">
+      {videogames?.map((videogame: videogameType, i: number) => (
         <VideogamesCard
           key={videogame.id}
           id={videogame.id}

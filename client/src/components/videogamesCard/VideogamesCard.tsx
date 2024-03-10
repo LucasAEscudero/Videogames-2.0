@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Card, CardBody, CardFooter } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Button } from "@nextui-org/react";
 
 import { videogameType } from "@/lib/types";
 
@@ -29,7 +29,7 @@ export default function VideogamesCard({
       animate="visible"
       transition={{ delay: index * 0.1, ease: "easeInOut", duration: 0.5 }}
       viewport={{ amount: 0 }}
-      className="min-w-[20rem]"
+      className="min-w-[20rem] relative"
     >
       <Card
         // fullWidth
@@ -47,13 +47,20 @@ export default function VideogamesCard({
             // width={500}
             // height={500}
             fill
+            title={`${name} Image`}
             alt={`${name} image`}
-            className="w-full object-cover h-[140px]"
+            className="w-full object-fill h-[140px]"
           />
         </CardBody>
         <CardFooter className="text-small justify-between">
           <b>{name}</b>
-          {/* <p className="text-default-500">{item.price}</p> */}
+          <Button
+            size="sm"
+            color="success"
+            title="Add this videogame at your library"
+          >
+            +
+          </Button>
         </CardFooter>
       </Card>
     </motion.article>

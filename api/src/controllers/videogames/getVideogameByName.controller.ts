@@ -6,7 +6,9 @@ import { fetchApiVideogamesType } from "../../utils/types";
 
 export default async function getVideogameByNameController(name: string) {
   const apiData = (
-    await axios.get(`/games?key=${process.env.API_KEY}&search=${name}`)
+    await axios.get(
+      `/games?key=${process.env.API_KEY}&search=${name}&page_size=18`
+    )
   ).data as fetchApiVideogamesType;
 
   if (!apiData) throw new FetchError("Error to fetch videogames data", 404);

@@ -9,7 +9,7 @@ const getKey: SWRInfiniteKeyLoader = (index, previousPageData) => {
 async function videogamesFetcher(url: string) {
   return await fetch(url)
     .then((res) => res.json())
-    .then((res) => res.results)
+    .then((res) => res.data)
     .catch((error) => console.log(error));
 }
 
