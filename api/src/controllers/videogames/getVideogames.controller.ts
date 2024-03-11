@@ -2,12 +2,18 @@ import axios from "axios";
 import { FetchError } from "../../utils/errors";
 import { formatVideogames } from "../../utils/formatVideogames";
 
-import { fetchApiVideogamesType } from "../../utils/types";
+import {
+  fetchApiVideogamesType,
+  videogamesQuerysType,
+} from "../../utils/types";
 
-export default async function getVideogamesController(page: number) {
-  const apiData = (
-    await axios.get(`/games?key=${process.env.API_KEY}&page=${page}`)
-  ).data as fetchApiVideogamesType;
+export default async function getVideogamesController(
+  page: number,
+  extraQuerys: videogamesQuerysType
+) {
+  const url = createVideogamesUrl(page, extraQuerys);
+
+  const apiData = (await axios.get(url)).data as fetchApiVideogamesType;
 
   if (!apiData) throw new FetchError("Error to fetch videogames data", 404);
 
@@ -19,3 +25,15 @@ export default async function getVideogamesController(page: number) {
     }),
   };
 }
+
+const createVideogamesUrl = (page: number, querys: videogamesQuerysType) => {
+  let url = `/games?key=${process.env.API_KEY}&page=${page}`;
+
+  if (querys.search !== undefined) url += `&search=${querys.search}`;
+  if (querys.genres) url += `&genres=${querys.genres}`;
+  if (querys.platforms) url += `&platforms=${querys.platforms}`;
+  if (querys.ordering) url += `&ordering=${querys.ordering}`;
+  console.log(url);
+
+  return url;
+};

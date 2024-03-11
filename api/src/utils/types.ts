@@ -45,3 +45,17 @@ export interface UserType {
   password: string;
   library: string[];
 }
+
+export interface videogamesQuerysType {
+  search?: string;
+  platforms?: string;
+  genres?: string;
+  ordering?:
+    | "name"
+    | "released"
+    | "added"
+    | "created"
+    | "updated"
+    | "rating"
+    | "metacritic";
+}

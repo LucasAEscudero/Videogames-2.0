@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { ClientError } from "../utils/errors";
 import { responseVideogamesData, responseData } from "../utils/response";
+import { videogamesQuerysType } from "../utils/types";
 
 import getVideogamesController from "../controllers/videogames/getVideogames.controller";
 import getVideogameByIdController from "../controllers/videogames/getVideogameById.controller";
-import getVideogameByNameController from "../controllers/videogames/getVideogameByName.controller";
 
 export const getVideogamesHandler = async (
   req: Request,
@@ -12,11 +12,14 @@ export const getVideogamesHandler = async (
   next: NextFunction
 ) => {
   try {
-    const { page } = req.query;
+    const { page, ...extraQuerys } = req.query;
 
     if (!page) throw new ClientError("Missing page query");
 
-    const data = await getVideogamesController(Number(page));
+    const data = await getVideogamesController(
+      Number(page),
+      extraQuerys as videogamesQuerysType
+    );
 
     return responseVideogamesData(res, 200, data);
   } catch (error) {
@@ -24,26 +27,20 @@ export const getVideogamesHandler = async (
   }
 };
 
-export const getVideogamesByHandler = async (
+export const getVideogamesByIdHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { id } = req.params;
-    const { page } = req.query;
 
     if (!id) throw new ClientError("Missing identifier param");
+    else if (!Number(id)) throw new ClientError("Id sould be a number");
 
-    if (Number(id)) {
-      const videogamesDetails = await getVideogameByIdController(Number(id));
+    const videogamesDetails = await getVideogameByIdController(Number(id));
 
-      return responseData(res, 200, videogamesDetails);
-    } else {
-      const data = await getVideogameByNameController(id, Number(page));
-
-      return responseVideogamesData(res, 200, data);
-    }
+    return responseData(res, 200, videogamesDetails);
   } catch (error) {
     return next(error);
   }

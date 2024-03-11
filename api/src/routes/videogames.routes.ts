@@ -1,13 +1,13 @@
 import { Router } from "express";
 import {
   getVideogamesHandler,
-  getVideogamesByHandler,
+  getVideogamesByIdHandler,
 } from "../handlers/videogames.handler";
 
 const videogamesRouter = Router();
 
 videogamesRouter.get("/", getVideogamesHandler);
-videogamesRouter.get("/:id", getVideogamesByHandler);
+videogamesRouter.get("/:id", getVideogamesByIdHandler);
 
 // videogamesRouter.post("/");
 
