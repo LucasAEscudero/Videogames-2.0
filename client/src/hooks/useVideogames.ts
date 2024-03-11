@@ -1,23 +1,32 @@
-const url = "http:/localhost:3001";
+"use client";
 import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
+import { fetcherVideogames } from "@/lib/fetcher";
+import { useDispatch } from "react-redux";
+import { validateNextPage } from "@/redux/videogamesPageSlice";
 
-const getKey: SWRInfiniteKeyLoader = (index, previousPageData) => {
+const getKeyVideogames: SWRInfiniteKeyLoader = (index, previousPageData) => {
   if (previousPageData && !previousPageData.length) return null;
   return `${process.env.NEXT_PUBLIC_API_URL}/videogames?page=${index + 1}`;
 };
 
-async function videogamesFetcher(url: string) {
-  return await fetch(url)
-    .then((res) => res.json())
-    .then((res) => res.data)
-    .catch((error) => console.log(error));
-}
+export default function useVideogames(search = "") {
+  const dispatch = useDispatch();
+  const getKeyFunction = !search
+    ? getKeyVideogames
+    : (index: number, previousPageData: []): string | null => {
+        if (previousPageData && !previousPageData.length) return null;
+        return `${process.env.NEXT_PUBLIC_API_URL}/videogames/${search}?page=${
+          index + 1
+        }`;
+      };
+  const { data, size, setSize, isLoading, error, isValidating } =
+    useSWRInfinite(getKeyFunction, fetcherVideogames);
 
-export default function useVideogames() {
-  const { data, size, setSize, isLoading, error } = useSWRInfinite(
-    getKey,
-    videogamesFetcher
-  );
+  // console.log(data);
+  if (data) {
+    if (data[data.length - 1] === undefined) dispatch(validateNextPage(false));
+    else dispatch(validateNextPage(true));
+  }
 
   return { data, size, setSize, isLoading, error };
 }

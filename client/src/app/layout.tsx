@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
-import { Spinner } from "@nextui-org/react";
-import { Suspense } from "react";
+import StoreProvider from "./StoreProvider";
 
 import NavBar from "@/components/navBar/NavBar";
 
@@ -23,13 +22,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <header>
-          <NavBar />
-        </header>
-        <Providers>
-          <main className="mx-5 mt-3">{children}</main>
-        </Providers>
-        <footer></footer>
+        <StoreProvider>
+          <header>
+            <NavBar />
+          </header>
+          <Providers>
+            <main className="mx-5 mt-3">{children}</main>
+          </Providers>
+          <footer></footer>
+        </StoreProvider>
       </body>
     </html>
   );

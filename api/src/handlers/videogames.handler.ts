@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ClientError } from "../utils/errors";
-import { responseData } from "../utils/response";
+import { responseVideogamesData, responseData } from "../utils/response";
 
 import getVideogamesController from "../controllers/videogames/getVideogames.controller";
 import getVideogameByIdController from "../controllers/videogames/getVideogameById.controller";
@@ -16,9 +16,9 @@ export const getVideogamesHandler = async (
 
     if (!page) throw new ClientError("Missing page query");
 
-    const videogames = await getVideogamesController(Number(page));
+    const data = await getVideogamesController(Number(page));
 
-    return responseData(res, 200, videogames);
+    return responseVideogamesData(res, 200, data);
   } catch (error) {
     return next(error);
   }
@@ -31,6 +31,7 @@ export const getVideogamesByHandler = async (
 ) => {
   try {
     const { id } = req.params;
+    const { page } = req.query;
 
     if (!id) throw new ClientError("Missing identifier param");
 
@@ -39,9 +40,9 @@ export const getVideogamesByHandler = async (
 
       return responseData(res, 200, videogamesDetails);
     } else {
-      const videogames = await getVideogameByNameController(id);
+      const data = await getVideogameByNameController(id, Number(page));
 
-      return responseData(res, 200, videogames);
+      return responseVideogamesData(res, 200, data);
     }
   } catch (error) {
     return next(error);

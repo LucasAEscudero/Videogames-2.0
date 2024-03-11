@@ -10,3 +10,9 @@ export interface videogameType {
   tags: string[];
   stores: string[];
 }
+
+export interface videogamesResponseType {
+  next: boolean;
+  previous: boolean;
+  data: videogameType[];
+}

@@ -41,13 +41,16 @@ export default function VideogamesCard({
       >
         <CardBody className="overflow-visible p-0 w-full h-full">
           <Image
-            src={image}
+            src={
+              image ||
+              "https://res.cloudinary.com/dub4acwkh/image/upload/v1710040327/default_image_qep19b.jpg"
+            }
             // shadow="sm"
             // radius="lg"
             // width={500}
             // height={500}
             fill
-            title={`${name} Image`}
+            title={`${name} ${image ? "Image" : "not contain an image"}`}
             alt={`${name} image`}
             className="w-full object-fill h-[140px]"
           />

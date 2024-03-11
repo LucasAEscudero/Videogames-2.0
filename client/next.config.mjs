@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "media.rawg.io",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
 };

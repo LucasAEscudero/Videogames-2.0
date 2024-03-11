@@ -1,20 +1,29 @@
 import { Response } from "express";
-import { arraysTypes, videogameType } from "./types";
-
-// interface responseType {
-//   error: boolean;
-//   message?: string;
-//   data?: arraysTypes;
-// }
+import { UserType, videogameType } from "./types";
 
 export function responseData(
   res: Response,
   status: number,
-  data: arraysTypes | videogameType
+  data: string[] | UserType[] | videogameType
 ) {
   res.status(status).json({
     error: false,
     data,
+  });
+}
+
+export function responseVideogamesData(
+  res: Response,
+  status: number,
+  results: {
+    next: boolean;
+    previous: boolean;
+    data: videogameType[];
+  }
+) {
+  res.status(status).json({
+    error: false,
+    results,
   });
 }
 

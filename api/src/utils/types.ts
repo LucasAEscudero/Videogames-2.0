@@ -45,5 +45,3 @@ export interface UserType {
   password: string;
   library: string[];
 }
-
-export type arraysTypes = string[] | videogameType[] | UserType[];
