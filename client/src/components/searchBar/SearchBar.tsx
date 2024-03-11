@@ -1,6 +1,5 @@
 "use client";
-import { Input, Button } from "@nextui-org/react";
-import { FaSearch } from "react-icons/fa";
+import { Input } from "@nextui-org/react";
 
 interface SearchBarProps {
   search: string;
@@ -20,7 +19,7 @@ export default function SearchBar({
         label={placeholder}
         value={search}
         onChange={handleSearch}
-        className="w-[15rem] sm:w-[20rem] h-[2rem]"
+        className="w-[20rem] h-[50px]"
       />
     </div>
   );

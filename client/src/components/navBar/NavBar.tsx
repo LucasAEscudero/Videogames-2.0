@@ -23,12 +23,6 @@ const menuItems = [
     targetBlank: false,
   },
   {
-    name: "Search",
-    title: "",
-    path: "/search",
-    targetBlank: false,
-  },
-  {
     name: "Library",
     title: "",
     path: "/library",

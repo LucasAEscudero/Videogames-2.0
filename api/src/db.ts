@@ -11,12 +11,4 @@ let sequelize = new Sequelize({
   models: [__dirname + "/models"],
 });
 
-// export default async function connection() {
-//   try {
-//     await sequelize.sync();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
 export default sequelize;

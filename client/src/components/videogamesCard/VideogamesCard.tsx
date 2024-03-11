@@ -50,6 +50,7 @@ export default function VideogamesCard({
             // width={500}
             // height={500}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             title={`${name} ${image ? "Image" : "not contain an image"}`}
             alt={`${name} image`}
             className="w-full object-fill h-[140px]"

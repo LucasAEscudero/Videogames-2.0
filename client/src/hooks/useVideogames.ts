@@ -21,8 +21,6 @@ export default function useVideogames(search = "") {
       };
   const { data, size, setSize, isLoading, error, isValidating } =
     useSWRInfinite(getKeyFunction, fetcherVideogames);
-
-  // console.log(data);
   if (data) {
     if (data[data.length - 1] === undefined) dispatch(validateNextPage(false));
     else dispatch(validateNextPage(true));

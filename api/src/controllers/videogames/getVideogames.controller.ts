@@ -14,7 +14,7 @@ export default async function getVideogamesController(page: number) {
   return {
     next: apiData.next ? true : false,
     previous: apiData.previous ? true : false,
-    videogames: apiData.results.map((videogame) => {
+    data: apiData.results.map((videogame) => {
       return formatVideogames(videogame);
     }),
   };
