@@ -16,3 +16,24 @@ export interface videogamesResponseType {
   previous: boolean;
   data: videogameType[];
 }
+
+export type genreApiType = {
+  id: number;
+  name: string;
+};
+
+export type platformApiType = genreApiType;
+
+export type genreType = {
+  label: string;
+  value: string;
+};
+
+export type platformType = genreType;
+
+export interface videogamesQueryType {
+  search: string;
+  genres: string;
+  platforms: string;
+  ordering: string;
+}

@@ -1,10 +1,20 @@
 import { Response } from "express";
-import { UserType, videogameType } from "./types";
+import {
+  UserType,
+  videogameType,
+  genresApiType,
+  platformsApiType,
+} from "./types";
 
 export function responseData(
   res: Response,
   status: number,
-  data: string[] | UserType[] | videogameType
+  data:
+    | string[]
+    | UserType[]
+    | videogameType
+    | genresApiType[]
+    | platformsApiType[]
 ) {
   res.status(status).json({
     error: false,

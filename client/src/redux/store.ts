@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 
-import videogamesPageSlice from "./videogamesPageSlice";
+import videogamesSlice from "./videogamesSlice";
 
 const store = configureStore({
   reducer: {
-    videogamesPage: videogamesPageSlice,
+    videogames: videogamesSlice,
   },
 });
 

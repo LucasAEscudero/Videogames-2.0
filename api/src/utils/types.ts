@@ -9,6 +9,13 @@ export type fetchApiVideogamesType = Omit<fetchApiDataType, "results"> & {
   results: videogameApiType[];
 };
 
+export interface genresApiType {
+  id: string;
+  name: string;
+}
+
+export type platformsApiType = genresApiType;
+
 // types
 export interface videogameApiType {
   id: number | string;
