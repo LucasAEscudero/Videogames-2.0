@@ -9,7 +9,7 @@ import { videogamesQueryType } from "@/lib/types";
 async function fetcherVideogames(url: string) {
   return await fetch(url)
     .then((res) => res.json())
-    .then((res) => res.results.data)
+    .then((res) => res?.data?.results)
     .catch((error) => {
       console.log(error);
     });

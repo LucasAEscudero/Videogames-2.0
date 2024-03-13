@@ -11,10 +11,28 @@ export interface videogameType {
   stores: string[];
 }
 
+export type videogameDetailsType = Pick<
+  videogameType,
+  | "id"
+  | "name"
+  | "image"
+  | "rating"
+  | "released"
+  | "metacritic"
+  | "platforms"
+  | "genres"
+  | "tags"
+  | "stores"
+> & {
+  description: string;
+  developers: string[];
+  screenshots: string[];
+};
+
 export interface videogamesResponseType {
   next: boolean;
   previous: boolean;
-  data: videogameType[];
+  results: videogameType[];
 }
 
 export type genreApiType = {

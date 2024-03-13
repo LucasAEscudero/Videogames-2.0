@@ -63,7 +63,6 @@ export default function Home() {
       )
     );
   }, []);
-
   // fetch next page when spinner is in view
   useEffect(() => {
     if (inView) setSize(size + 1);

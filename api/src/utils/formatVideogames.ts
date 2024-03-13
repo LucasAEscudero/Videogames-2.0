@@ -1,9 +1,10 @@
-import { videogameApiType } from "./types";
+import { videogameApiType, videogameType } from "./types";
 
-export function formatVideogames(videogame: videogameApiType) {
+export function formatVideogames(videogame: videogameApiType): videogameType {
   return {
     id: videogame.id,
     name: videogame.name,
+    // description: videogame.description_raw,
     image: videogame.background_image,
     rating: videogame.rating,
     released: videogame.released,
@@ -28,7 +29,10 @@ export function formatVideogames(videogame: videogameApiType) {
   };
 }
 
-export function formatVideogameDetails(videogame: videogameApiType) {
+export function formatVideogameDetails(
+  videogame: videogameApiType,
+  screenshots: { image: string }[]
+) {
   return {
     id: videogame.id,
     name: videogame.name,
@@ -52,5 +56,6 @@ export function formatVideogameDetails(videogame: videogameApiType) {
     developers: videogame.developers?.map((developer: { name: string }) => {
       return developer.name;
     }),
+    screenshots: screenshots.map((screenshot) => screenshot.image),
   };
 }

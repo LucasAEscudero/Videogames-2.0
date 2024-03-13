@@ -20,7 +20,7 @@ export default async function getVideogamesController(
   return {
     next: apiData.next ? true : false,
     previous: apiData.previous ? true : false,
-    data: apiData.results.map((videogame) => {
+    results: apiData.results.map((videogame) => {
       return formatVideogames(videogame);
     }),
   };
@@ -33,7 +33,6 @@ const createVideogamesUrl = (page: number, querys: videogamesQuerysType) => {
   if (querys.genres) url += `&genres=${querys.genres}`;
   if (querys.platforms) url += `&platforms=${querys.platforms}`;
   if (querys.ordering) url += `&ordering=${querys.ordering}`;
-  console.log(url);
 
   return url;
 };

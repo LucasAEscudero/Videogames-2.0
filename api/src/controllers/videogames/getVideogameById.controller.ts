@@ -12,5 +12,11 @@ export default async function getVideogameByIdController(id: number) {
   if (!videogameDetails)
     throw new FetchError("Error to fetch videogame details data", 404);
 
-  return formatVideogameDetails(videogameDetails);
+  const slug = videogameDetails.slug;
+
+  const screenshots: { results: { image: string }[] } = (
+    await axios.get(`/games/${slug}/screenshots?key=${process.env.API_KEY}`)
+  ).data;
+
+  return formatVideogameDetails(videogameDetails, screenshots.results);
 }

@@ -4,6 +4,7 @@ import {
   videogameType,
   genresApiType,
   platformsApiType,
+  videogamesResponseType,
 } from "./types";
 
 export function responseData(
@@ -25,15 +26,11 @@ export function responseData(
 export function responseVideogamesData(
   res: Response,
   status: number,
-  results: {
-    next: boolean;
-    previous: boolean;
-    data: videogameType[];
-  }
+  results: videogamesResponseType
 ) {
   res.status(status).json({
     error: false,
-    results,
+    data: results,
   });
 }
 

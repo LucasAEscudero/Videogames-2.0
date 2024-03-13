@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ClientError } from "../utils/errors";
 import { responseVideogamesData, responseData } from "../utils/response";
-import { videogamesQuerysType } from "../utils/types";
+import { videogamesQuerysType, videogamesResponseType } from "../utils/types";
 
 import getVideogamesController from "../controllers/videogames/getVideogames.controller";
 import getVideogameByIdController from "../controllers/videogames/getVideogameById.controller";
@@ -16,7 +16,7 @@ export const getVideogamesHandler = async (
 
     if (!page) throw new ClientError("Missing page query");
 
-    const data = await getVideogamesController(
+    const data: videogamesResponseType = await getVideogamesController(
       Number(page),
       extraQuerys as videogamesQuerysType
     );
