@@ -5,9 +5,9 @@ import { Image } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 
-import VideogamesDetailsItems from "@/components/videogameDetailsComponents/videogamesDetailsItems/videogamesDetailsItems";
+import Items from "@/components/items/Items";
 import Carousel from "@/components/carrousel/Carrousel";
-import VideogameDetailsHeader from "@/components/videogameDetailsComponents/videogameDetailsHeader/VideogameDetailsHeader";
+import VideogameDetailsHeader from "@/components/videogameDetailsHeader/VideogameDetailsHeader";
 import { videogameDetailsType } from "@/lib/types";
 
 export default function VideogamesDetails({
@@ -77,31 +77,22 @@ export default function VideogamesDetails({
           <p>{videogame.description}</p>
           {/* genres and platforms items */}
           <div className="hidden sm:grid grid-cols-3">
-            <VideogamesDetailsItems title="Genres" array={videogame.genres} />
+            <Items title="Genres" array={videogame.genres} />
             <div className="col-span-2">
-              <VideogamesDetailsItems
-                title="Platforms"
-                array={videogame.platforms}
-              />
+              <Items title="Platforms" array={videogame.platforms} />
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-3">
           {/* genres and platforms items responsive */}
           <div className="flex flex-col sm:hidden">
-            <VideogamesDetailsItems title="Genres" array={videogame.genres} />
-            <VideogamesDetailsItems
-              title="Platforms"
-              array={videogame.platforms}
-            />
+            <Items title="Genres" array={videogame.genres} />
+            <Items title="Platforms" array={videogame.platforms} />
           </div>
           {/* tags, developers and stores items */}
-          <VideogamesDetailsItems title="Tags" array={videogame.tags} />
-          <VideogamesDetailsItems
-            title="Developers"
-            array={videogame.developers}
-          />
-          <VideogamesDetailsItems title="Stores" array={videogame.stores} />
+          <Items title="Tags" array={videogame.tags} />
+          <Items title="Developers" array={videogame.developers} />
+          <Items title="Stores" array={videogame.stores} />
         </div>
       </div>
     </section>

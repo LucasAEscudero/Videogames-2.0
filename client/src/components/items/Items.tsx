@@ -1,4 +1,4 @@
-export default function VideogamesDetailsItems({
+export default function Items({
   title,
   array,
 }: {

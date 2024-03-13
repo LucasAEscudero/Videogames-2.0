@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import StoreProvider from "./StoreProvider";
 
 import NavBar from "@/components/navBar/NavBar";
+import Footer from "@/components/footer/Footer";
 
 import "./globals.css";
 
@@ -29,7 +30,7 @@ export default function RootLayout({
           <Providers>
             <main className="mx-5 mt-3">{children}</main>
           </Providers>
-          <footer></footer>
+          <Footer />
         </StoreProvider>
       </body>
     </html>
