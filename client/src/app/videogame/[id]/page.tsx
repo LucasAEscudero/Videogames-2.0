@@ -5,6 +5,7 @@ import { Image } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 // import { useState, useEffect } from "react";
 import { Metadata } from "next";
+import { revalidatePath } from "next/cache";
 
 import Items from "@/components/items/Items";
 import Carousel from "@/components/carrousel/Carrousel";
@@ -35,10 +36,18 @@ export async function generateMetadata({
   };
 }
 
+async function fetchVideogameDetails(id: string) {
+  const videogameDetails = await fetcher(`/videogames/${id}`);
+
+  revalidatePath(`/videogame/${id}`);
+
+  return videogameDetails;
+}
+
 export default async function VideogamesDetails({
   params: { id },
 }: videogameDetailsProps) {
-  const videogame: videogameDetailsType = await fetcher(`/videogames/${id}`);
+  const videogame: videogameDetailsType = await fetchVideogameDetails(id);
   // const [videogame, setVideogame] = useState<videogameDetailsType | null>(null);
 
   // useEffect(() => {

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NextImage from "next/image";
 import {
   Image,
@@ -17,13 +17,19 @@ interface CarouselProps {
 
 export default function Carousel({ images, imagesType }: CarouselProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedImage, setSelectedImage] = useState<string>(images[0]);
-  const [previousImage, setPreviousImage] = useState<string>(
-    images[images.length - 1]
-  );
-  const [nextImage, setNextImage] = useState<string>(images[1]);
+  const [selectedImage, setSelectedImage] = useState<string>("");
+  const [previousImage, setPreviousImage] = useState<string>("");
+  const [nextImage, setNextImage] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalImage, setModalImage] = useState<string>("");
+
+  useEffect(() => {
+    if (images) {
+      setPreviousImage(images[images.length - 1]);
+      setSelectedImage(images[0]);
+      setNextImage(images[1]);
+    }
+  }, [images]);
 
   const selectNewImage = (next = true) => {
     const condition = next
@@ -39,11 +45,9 @@ export default function Carousel({ images, imagesType }: CarouselProps) {
       nextIndex = selectedIndex - 1;
     } else nextIndex = images.length - 1;
 
-    setSelectedImage(images[nextIndex]);
+    setPreviousImage(selectedImage);
+    setSelectedImage(nextImage);
     setSelectedIndex(nextIndex);
-    setPreviousImage(
-      nextIndex === 0 ? images[images.length - 1] : images[nextIndex - 1]
-    );
     setNextImage(
       nextIndex === images.length - 1 ? images[0] : images[nextIndex + 1]
     );
