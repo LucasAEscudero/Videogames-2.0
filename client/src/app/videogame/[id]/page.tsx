@@ -1,25 +1,49 @@
-"use client";
+// "use client";
 import fetcher from "@/lib/fetcher";
 import NextImage from "next/image";
 import { Image } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
+import { Metadata } from "next";
 
 import Items from "@/components/items/Items";
 import Carousel from "@/components/carrousel/Carrousel";
 import VideogameDetailsHeader from "@/components/videogameDetailsHeader/VideogameDetailsHeader";
 import { videogameDetailsType } from "@/lib/types";
 
-export default function VideogamesDetails({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
-  const [videogame, setVideogame] = useState<videogameDetailsType | null>(null);
+interface videogameDetailsProps {
+  params: {
+    id: string;
+  };
+}
 
-  useEffect(() => {
-    fetcher(`/videogames/${id}`).then((data) => setVideogame(data));
-  }, []);
+export async function generateMetadata({
+  params: { id },
+}: videogameDetailsProps): Promise<Metadata> {
+  const videogame: videogameDetailsType = await fetcher(`/videogames/${id}`);
+
+  return {
+    title: videogame.name,
+    description: videogame.description,
+    openGraph: {
+      images: [
+        {
+          url: videogame.image,
+        },
+      ],
+    },
+  };
+}
+
+export default async function VideogamesDetails({
+  params: { id },
+}: videogameDetailsProps) {
+  const videogame: videogameDetailsType = await fetcher(`/videogames/${id}`);
+  // const [videogame, setVideogame] = useState<videogameDetailsType | null>(null);
+
+  // useEffect(() => {
+  //   fetcher(`/videogames/${id}`).then((data) => setVideogame(data));
+  // }, []);
 
   if (!videogame) return <Spinner />;
 
@@ -66,9 +90,11 @@ export default function VideogamesDetails({
         </div>
       </div>
       {/* screenshots */}
+      {/* {videogame.screenshots && ( */}
       <div className="sm:hidden inline-block">
         <Carousel images={videogame.screenshots} imagesType="Screenshot" />
       </div>
+      {/* )} */}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-10">
         {/* description */}

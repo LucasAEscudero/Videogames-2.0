@@ -46,7 +46,7 @@ export default function Home() {
     fetcher("/genres").then((data) =>
       dispatch(
         setGenres(
-          data.map((genre: genreApiType) => {
+          data?.map((genre: genreApiType) => {
             return { label: genre.name, value: genre.id };
           })
         )
@@ -56,7 +56,7 @@ export default function Home() {
     fetcher("/platforms").then((data) =>
       dispatch(
         setPlatforms(
-          data.map((platform: platformApiType) => {
+          data?.map((platform: platformApiType) => {
             return { label: platform.name, value: platform.id };
           })
         )
