@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={inter.className}>
         <StoreProvider>
-          <header>
+          <header className="sticky z-[999] top-0">
             <NavBar />
           </header>
           <Providers>
