@@ -18,7 +18,7 @@ usersRouter.put("/", checkToken, putUserHandler);
 usersRouter.delete("/:id", deleteUserHandler);
 
 // authentication
-usersRouter.post("/auth/register", registerUserHandler);
-usersRouter.post("/auth/login", loginUserHandler);
+usersRouter.post("/signup", registerUserHandler);
+usersRouter.post("/login", loginUserHandler);
 
 export default usersRouter;

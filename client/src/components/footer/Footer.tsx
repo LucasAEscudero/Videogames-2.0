@@ -4,7 +4,8 @@ export default function Footer() {
       <p className="text-xs">
         <span className="font-semibold">About this web site:</span> was created
         with React & Next.js (App Router & Server Actions), Typescript, Redux
-        Toolkit, Tailwind CSS, NextUI, Framer Motion, Vercel hosting{" "}
+        Toolkit, Tailwind CSS, NextUI, Framer Motion, React Hook Form, Vercel
+        hosting{" "}
       </p>
     </footer>
   );
