@@ -1,6 +1,6 @@
 "use client";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Link } from "@nextui-org/react";
 
 type FormData = {
   username: string;
@@ -22,7 +22,7 @@ export default function SignUp() {
     <section className="flex justify-center">
       <div className="flex flex-col justify-center gap-7 bg-[#18181b] rounded-xl w-[20em] p-5">
         <h2 className="text-2xl text-center">Sign Up</h2>
-        <form onSubmit={onSubmit} className="flex flex-col gap-5">
+        <form onSubmit={onSubmit} className="flex flex-col">
           {/* username */}
           <Input
             label="Username"
@@ -49,6 +49,7 @@ export default function SignUp() {
             label="Email"
             isRequired
             size="md"
+            className="mt-5"
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -66,6 +67,7 @@ export default function SignUp() {
             label="Password"
             isRequired
             size="md"
+            className="mt-5"
             {...register("password", {
               required: "The password is required",
               minLength: {
@@ -87,6 +89,7 @@ export default function SignUp() {
             label="Confirm password"
             isRequired
             size="md"
+            className="mt-5"
             {...register("confirmPassword", {
               required: "Confirm your password is required",
               validate: (value) => {
@@ -125,8 +128,16 @@ export default function SignUp() {
             </>
           )} */}
 
-          <Button type="submit">Register</Button>
+          <Button type="submit" className="mt-5">
+            Register
+          </Button>
         </form>
+        <p className="text-center text-sm">
+          Already have an account?{" "}
+          <Link href="/login" size="sm">
+            Login here!
+          </Link>
+        </p>
       </div>
     </section>
   );
