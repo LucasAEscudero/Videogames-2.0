@@ -12,8 +12,12 @@ import Link from "next/link";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useSelector, useDispatch } from "react-redux";
+import { logOut } from "@/redux/userSlice";
+import { deleteCookie } from "@/lib/actions";
 
 import NavBarItem from "../navBarItem/NavBarItem";
+import { RootState } from "@/redux/store";
 
 const menuItems = [
   {
@@ -39,6 +43,14 @@ const menuItems = [
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const dispatch = useDispatch();
+  const { id, username, email } = useSelector((state: RootState) => state.user);
+
+  const handleLogOut = async () => {
+    deleteCookie("videogames_session_token");
+
+    dispatch(logOut());
+  };
 
   if (pathname === "/login" || pathname === "/signup")
     return (
@@ -88,14 +100,32 @@ export default function NavBar() {
         ))}
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/login">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="/signup" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem>
+        {username ? (
+          <NavbarItem>
+            {/* if the user is logged */}
+            <Button
+              as={Link}
+              color="danger"
+              href=""
+              onClick={handleLogOut}
+              variant="flat"
+            >
+              Log Out
+            </Button>
+          </NavbarItem>
+        ) : (
+          // if the user is not logged
+          <>
+            <NavbarItem className="hidden lg:flex">
+              <Link href="/login">Login</Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Button as={Link} color="primary" href="/signup" variant="flat">
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map(({ name, path, targetBlank, title }, index) => (

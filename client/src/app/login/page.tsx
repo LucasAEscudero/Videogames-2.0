@@ -56,6 +56,7 @@ export default function LogIn() {
       });
 
       redirectPage("/");
+      // decoded token and set user
       const tokenData: userType | undefined = await decodedToken(
         "videogames_token_session"
       );

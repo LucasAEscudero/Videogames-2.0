@@ -21,9 +21,14 @@ export const userSlice = createSlice({
         state.email = email;
       }
     },
+    logOut: (state) => {
+      state.id = "";
+      state.username = "";
+      state.email = "";
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, logOut } = userSlice.actions;
 
 export default userSlice.reducer;

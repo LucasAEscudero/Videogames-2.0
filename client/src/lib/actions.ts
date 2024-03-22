@@ -95,3 +95,6 @@ export async function decodedToken(tokenName: string) {
     return { id, username, email };
   }
 }
+
+export const deleteCookie = async (cookieName: string) =>
+  cookies().delete(cookieName);
