@@ -55,3 +55,9 @@ export interface videogamesQueryType {
   platforms: string;
   ordering: string;
 }
+
+export interface userType {
+  id: string;
+  username: string;
+  email: string;
+}

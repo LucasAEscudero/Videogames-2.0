@@ -2,10 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 
 import videogamesSlice from "./videogamesSlice";
+import userSlice from "./userSlice";
 
 const store = configureStore({
   reducer: {
     videogames: videogamesSlice,
+    user: userSlice,
   },
 });
 

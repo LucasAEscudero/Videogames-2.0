@@ -2,8 +2,11 @@
 import { useForm } from "react-hook-form";
 import { Button, Input, Link } from "@nextui-org/react";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/userSlice";
 
-import { logInFormAction, redirectPage } from "@/lib/actions";
+import { logInFormAction, redirectPage, decodedToken } from "@/lib/actions";
+import { userType } from "@/lib/types";
 
 type FormData = {
   identifier: string;
@@ -11,6 +14,7 @@ type FormData = {
 };
 
 export default function LogIn() {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -52,6 +56,10 @@ export default function LogIn() {
       });
 
       redirectPage("/");
+      const tokenData: userType | undefined = await decodedToken(
+        "videogames_token_session"
+      );
+      if (tokenData) dispatch(setUser(tokenData));
     }
   });
 

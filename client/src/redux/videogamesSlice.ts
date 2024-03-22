@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const videogamesSlice = createSlice({
-  name: "videogamesPage",
+  name: "videogames",
   initialState,
   reducers: {
     validateVideogamesExist: (state, action: PayloadAction<boolean>) => {

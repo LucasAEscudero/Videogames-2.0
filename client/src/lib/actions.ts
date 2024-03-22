@@ -1,6 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/userSlice";
 
 interface logInFormActionProps {
   identifier: string;
@@ -62,10 +65,33 @@ export async function logInFormAction({
       secure: true,
       maxAge: 1000 * 60 * 60 * 24,
     });
+
+    decodedToken("videogames_session_token");
+
     return { error: false, message: "Login successfully" };
   }
 }
 
+// redirect function
 export async function redirectPage(path: string) {
   redirect(path);
+}
+
+// decodedToken
+type userPayloadTokenType = JwtPayload & {
+  id: string;
+  username: string;
+  email: string;
+};
+
+export async function decodedToken(tokenName: string) {
+  const tokenCookie = cookies().get("videogames_session_token");
+
+  if (tokenCookie) {
+    const { id, username, email } = jwtDecode<userPayloadTokenType>(
+      tokenCookie.value
+    );
+
+    return { id, username, email };
+  }
 }
