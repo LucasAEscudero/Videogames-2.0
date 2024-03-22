@@ -5,6 +5,7 @@ import StoreProvider from "./StoreProvider";
 
 import NavBar from "@/components/navBar/NavBar";
 import Footer from "@/components/footer/Footer";
+import { Toaster } from "react-hot-toast";
 
 import "./globals.css";
 
@@ -32,6 +33,7 @@ export default function RootLayout({
           </Providers>
           <Footer />
         </StoreProvider>
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );

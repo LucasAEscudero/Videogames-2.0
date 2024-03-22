@@ -47,6 +47,18 @@ export default function NavBar() {
           <NavbarBrand>
             <h1 className="font-bold text-inherit">VIDEOGAMES</h1>
           </NavbarBrand>
+          <NavbarContent justify="end">
+            {/* login */}
+            <NavbarItem className="hidden lg:flex">
+              <Link href="/login">Login</Link>
+            </NavbarItem>
+            {/* signup */}
+            <NavbarItem>
+              <Button as={Link} color="primary" href="/signup" variant="flat">
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </NavbarContent>
         </NavbarContent>
       </Navbar>
     );

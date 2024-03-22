@@ -15,7 +15,7 @@ export default async function registerUserController(
     if (alreadyExists.username === username)
       throw new ClientError(`The username ${username} already exists`);
     else if (alreadyExists.email === email)
-      throw new ClientError(`The email ${email} already exists`);
+      throw new ClientError(`The user with the email ${email} already exists`);
   }
 
   const userCreated = await Users.create({

@@ -1,6 +1,9 @@
 "use client";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button, Input, Link } from "@nextui-org/react";
+import toast from "react-hot-toast";
+
+import { logInFormAction, redirectPage } from "@/lib/actions";
 
 type FormData = {
   identifier: string;
@@ -14,7 +17,43 @@ export default function LogIn() {
     watch,
     formState: { errors },
   } = useForm<FormData>();
-  const onSubmit = handleSubmit((data) => console.log(data));
+
+  const onSubmit = handleSubmit(async (data) => {
+    const { error, message } = await logInFormAction({
+      identifier: data.identifier,
+      password: data.password,
+    });
+
+    if (error) {
+      toast.error(message, {
+        style: {
+          padding: "12px",
+          color: "#fff",
+          background: "#27272a",
+          border: "1px solid #18181b",
+        },
+        iconTheme: {
+          primary: "#f31260",
+          secondary: "#FFFAEE",
+        },
+      });
+    } else {
+      toast.success(message, {
+        style: {
+          padding: "12px",
+          color: "#fff",
+          background: "#27272a",
+          border: "1px solid #18181b",
+        },
+        iconTheme: {
+          primary: "#18c964",
+          secondary: "#FFFAEE",
+        },
+      });
+
+      redirectPage("/");
+    }
+  });
 
   return (
     <section className="flex justify-center">
@@ -23,7 +62,7 @@ export default function LogIn() {
         <form onSubmit={onSubmit} className="flex flex-col">
           {/* username */}
           <Input
-            label="Username/Email"
+            label="Username / Email"
             isRequired
             size="md"
             {...register("identifier", {
@@ -60,7 +99,11 @@ export default function LogIn() {
             <p className="text-red-800 text-sm">*{errors.password.message}</p>
           )}
 
-          <Button type="submit" className="mt-5">
+          <Button
+            type="submit"
+            className="mt-5"
+            disabled={!watch("identifier") || !watch("password")}
+          >
             Register
           </Button>
         </form>

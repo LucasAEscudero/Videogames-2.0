@@ -1,6 +1,9 @@
 "use client";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button, Input, Link } from "@nextui-org/react";
+import toast from "react-hot-toast";
+
+import { signUpFormAction, logInFormAction, redirectPage } from "@/lib/actions";
 
 type FormData = {
   username: string;
@@ -16,7 +19,47 @@ export default function SignUp() {
     watch,
     formState: { errors },
   } = useForm<FormData>();
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit(async (data) => {
+    const { error, message } = await signUpFormAction({
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    });
+
+    if (error) {
+      toast.error(message, {
+        style: {
+          padding: "12px",
+          color: "#fff",
+          background: "#27272a",
+          border: "1px solid #18181b",
+        },
+        iconTheme: {
+          primary: "#f31260",
+          secondary: "#FFFAEE",
+        },
+      });
+    } else {
+      toast.success(message, {
+        style: {
+          padding: "12px",
+          color: "#fff",
+          background: "#27272a",
+          border: "1px solid #18181b",
+        },
+        iconTheme: {
+          primary: "#18c964",
+          secondary: "#FFFAEE",
+        },
+      });
+      // login
+      await logInFormAction({
+        identifier: data.username,
+        password: data.password,
+      });
+      redirectPage("/");
+    }
+  });
 
   return (
     <section className="flex justify-center">
@@ -128,7 +171,16 @@ export default function SignUp() {
             </>
           )} */}
 
-          <Button type="submit" className="mt-5">
+          <Button
+            type="submit"
+            className="mt-5"
+            disabled={
+              !watch("username") ||
+              !watch("email") ||
+              !watch("password") ||
+              !watch("confirmPassword")
+            }
+          >
             Register
           </Button>
         </form>

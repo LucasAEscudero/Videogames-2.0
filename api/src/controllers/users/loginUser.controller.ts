@@ -1,20 +1,28 @@
 import Users from "../../models/users.model";
 import { generateToken } from "../../utils/jwt";
 import { ClientError } from "../../utils/errors";
+import { Op } from "sequelize";
 
 export default async function loginUserController(
-  username: string,
-  email: string,
+  id: string,
   password: string
 ) {
   const user = await Users.findOne({
     where: {
-      username,
-      email,
-      password,
+      [Op.or]: {
+        username: id,
+        email: id,
+      },
     },
   });
 
   if (!user) throw new ClientError("This user not exist", 404);
-  else return generateToken({ id: user.id, username, email });
+  else if (password !== user.password)
+    throw new ClientError("The password is incorrect");
+
+  return generateToken({
+    id: user.id,
+    email: user.email,
+    username: user.username,
+  });
 }

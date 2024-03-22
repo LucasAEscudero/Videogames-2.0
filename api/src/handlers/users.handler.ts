@@ -82,7 +82,7 @@ export const postUserVideogameHandler = async (
   }
 };
 
-// authentication
+// signup
 export const registerUserHandler = async (
   req: Request,
   res: Response,
@@ -105,30 +105,31 @@ export const registerUserHandler = async (
   }
 };
 
+// login
 export const loginUserHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { username, email, password } = req.body;
+    const { id, password } = req.body;
 
-    if (!username || !email || !password) throw new ClientError("Missing data");
+    if (!id || !password) throw new ClientError("Missing data");
 
-    const userToken = await loginUserController(username, email, password);
+    const userToken = await loginUserController(id, password);
 
     if (!userToken) throw new Error("Token could not to be generated");
 
     const serialized = serialize("videogames_session_token", userToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 24,
       path: "/",
     });
 
     res.setHeader("Set-Cookie", serialized);
-    return responseMessage(res, 200, "Login succesfully");
+    return responseMessage(res, 200, serialized);
   } catch (error) {
     return next(error);
   }
