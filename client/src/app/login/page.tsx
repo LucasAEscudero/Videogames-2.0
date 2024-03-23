@@ -1,12 +1,13 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { Button, Input, Link } from "@nextui-org/react";
-import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { setUser } from "@/redux/userSlice";
+import { useRouter } from "next/navigation";
 
-import { logInFormAction, redirectPage, decodedToken } from "@/lib/actions";
-import { userType } from "@/lib/types";
+import {
+  styledErrorToast,
+  styledSuccessToast,
+} from "@/components/styledToast/StyledToast";
+import { logInFormAction } from "@/lib/user-actions";
 
 type FormData = {
   identifier: string;
@@ -14,7 +15,7 @@ type FormData = {
 };
 
 export default function LogIn() {
-  const dispatch = useDispatch();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -29,38 +30,13 @@ export default function LogIn() {
     });
 
     if (error) {
-      toast.error(message, {
-        style: {
-          padding: "12px",
-          color: "#fff",
-          background: "#27272a",
-          border: "1px solid #18181b",
-        },
-        iconTheme: {
-          primary: "#f31260",
-          secondary: "#FFFAEE",
-        },
-      });
+      // message with the error to log in
+      styledErrorToast(message);
     } else {
-      toast.success(message, {
-        style: {
-          padding: "12px",
-          color: "#fff",
-          background: "#27272a",
-          border: "1px solid #18181b",
-        },
-        iconTheme: {
-          primary: "#18c964",
-          secondary: "#FFFAEE",
-        },
-      });
+      // message -> log in successfully
+      styledSuccessToast(message);
 
-      redirectPage("/");
-      // decoded token and set user
-      const tokenData: userType | undefined = await decodedToken(
-        "videogames_token_session"
-      );
-      if (tokenData) dispatch(setUser(tokenData));
+      router.push("/");
     }
   });
 

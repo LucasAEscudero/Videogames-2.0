@@ -1,9 +1,13 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { Button, Input, Link } from "@nextui-org/react";
-import toast from "react-hot-toast";
 
-import { signUpFormAction, logInFormAction, redirectPage } from "@/lib/actions";
+import {
+  styledErrorToast,
+  styledSuccessToast,
+} from "@/components/styledToast/StyledToast";
+import { signUpFormAction, logInFormAction } from "@/lib/user-actions";
+import { redirectTo } from "@/lib/actions";
 
 type FormData = {
   username: string;
@@ -20,6 +24,7 @@ export default function SignUp() {
     formState: { errors },
   } = useForm<FormData>();
   const onSubmit = handleSubmit(async (data) => {
+    // register user
     const { error, message } = await signUpFormAction({
       username: data.username,
       email: data.email,
@@ -27,37 +32,18 @@ export default function SignUp() {
     });
 
     if (error) {
-      toast.error(message, {
-        style: {
-          padding: "12px",
-          color: "#fff",
-          background: "#27272a",
-          border: "1px solid #18181b",
-        },
-        iconTheme: {
-          primary: "#f31260",
-          secondary: "#FFFAEE",
-        },
-      });
+      // message with the error to sign up
+      styledErrorToast(message);
     } else {
-      toast.success(message, {
-        style: {
-          padding: "12px",
-          color: "#fff",
-          background: "#27272a",
-          border: "1px solid #18181b",
-        },
-        iconTheme: {
-          primary: "#18c964",
-          secondary: "#FFFAEE",
-        },
-      });
-      // login
+      // message -> sign up successfully
+      styledSuccessToast(message);
+
+      // re-login and redirection
       await logInFormAction({
         identifier: data.username,
         password: data.password,
       });
-      redirectPage("/");
+      redirectTo("/");
     }
   });
 

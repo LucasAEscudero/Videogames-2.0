@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Card, CardBody, CardFooter, Button } from "@nextui-org/react";
+import { IoLibrary } from "react-icons/io5";
 
 import { videogameType } from "@/lib/types";
 import { useRouter } from "next/navigation";
@@ -32,7 +33,7 @@ export default function VideogamesCard({
         shadow="sm"
         key={index}
         isPressable
-        onPress={() => router.push(`/videogame/${id}`)}
+        onPress={() => router.push(`/videogames/${id}`)}
         className="w-[300px] sm:w-[25rem] h-[15rem]"
       >
         <CardBody className="overflow-visible p-0 w-full h-full">
@@ -55,6 +56,9 @@ export default function VideogamesCard({
             color="success"
             title="Add this videogame at your library"
           >
+            <span className="hidden">
+              <IoLibrary /> |
+            </span>{" "}
             +
           </Button>
         </CardFooter>
