@@ -1,5 +1,6 @@
 "use client";
 import {
+  // nav
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -7,12 +8,23 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
+  // modal
   Modal,
   ModalHeader,
   ModalBody,
   ModalContent,
   ModalFooter,
   useDisclosure,
+  // dropdown
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  DropdownSection,
+  // avatar
+  Avatar,
+  User,
+  // others
 } from "@nextui-org/react";
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
@@ -57,7 +69,8 @@ export default function NavBar() {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { id, username, email } = useSelector((state: RootState) => state.user);
+  // user profile
+  const { username, email } = useSelector((state: RootState) => state.user);
 
   const handleLogOut = async () => {
     deleteUserData();
@@ -118,18 +131,59 @@ export default function NavBar() {
         </NavbarContent>
         <NavbarContent justify="end">
           {username ? (
-            <NavbarItem>
-              {/* if the user is logged */}
-              <Button
-                as={Link}
-                color="danger"
-                href=""
-                onClick={onOpen}
-                variant="flat"
+            // if the user is logged
+            <Dropdown>
+              <DropdownTrigger>
+                <Avatar
+                  as="button"
+                  src=""
+                  name={username}
+                  className="transition-transform"
+                />
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Static Actions"
+                disabledKeys={["profile"]}
               >
-                Log Out
-              </Button>
-            </NavbarItem>
+                {/* info section */}
+                <DropdownSection aria-label="user info" showDivider>
+                  <DropdownItem
+                    isReadOnly
+                    key="profile"
+                    className="h-14 gap-2 opacity-100"
+                  >
+                    <User
+                      name={username}
+                      description={email}
+                      classNames={{
+                        name: "text-default-600",
+                        description: "text-default-500",
+                      }}
+                      avatarProps={{
+                        size: "sm",
+                        // src: "https://avatars.githubusercontent.com/u/30373425?v=4",
+                      }}
+                    />
+                  </DropdownItem>
+                </DropdownSection>
+                {/* settings section */}
+                <DropdownSection aria-label="user settings" showDivider>
+                  <DropdownItem key="edit">Edit</DropdownItem>
+                  <DropdownItem key="settings">Settings</DropdownItem>
+                </DropdownSection>
+                {/* logout section */}
+                <DropdownSection aria-label="user logout">
+                  <DropdownItem
+                    key="logout"
+                    className="text-danger"
+                    color="danger"
+                    onClick={onOpen}
+                  >
+                    Log Out
+                  </DropdownItem>
+                </DropdownSection>
+              </DropdownMenu>
+            </Dropdown>
           ) : (
             // if the user is not logged
             <>
