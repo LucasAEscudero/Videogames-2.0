@@ -43,24 +43,28 @@ const menuItems = [
     title: "Click to go to the home page",
     path: "/",
     targetBlank: false,
+    auth: false,
   },
   {
     name: "Videogames",
     title: "Click to go to the videogames page",
     path: "/videogames",
     targetBlank: false,
+    auth: false,
   },
   {
     name: "Library",
     title: "Click to go at your library",
     path: "/library",
     targetBlank: false,
+    auth: true,
   },
   {
     name: "RAWG API",
     title: "Click to go to the RAWG API page",
     path: "https://rawg.io/apidocs",
     targetBlank: true,
+    auth: false,
   },
 ];
 
@@ -83,9 +87,11 @@ export default function NavBar() {
       <>
         <Navbar>
           <NavbarContent>
+            {/* logo */}
             <NavbarBrand>
               <h1 className="font-bold text-inherit">VIDEOGAMES</h1>
             </NavbarBrand>
+            {/* session */}
             <NavbarContent justify="end">
               {/* login */}
               <NavbarItem className="hidden lg:flex">
@@ -107,6 +113,7 @@ export default function NavBar() {
   return (
     <>
       <Navbar onMenuOpenChange={setIsMenuOpen} isBordered>
+        {/* logo */}
         <NavbarContent>
           <NavbarMenuToggle
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -117,18 +124,24 @@ export default function NavBar() {
           </NavbarBrand>
         </NavbarContent>
 
+        {/* links */}
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          {menuItems.map((item, i) => (
-            <NavBarItem
-              key={`${item.title}-${i}`}
-              link={item.path}
-              title={item.title}
-              targetBlank={item.targetBlank}
-            >
-              {item.name}
-            </NavBarItem>
-          ))}
+          {menuItems
+            .filter((item) => {
+              return username ? item : !item.auth;
+            })
+            .map((item, i) => (
+              <NavBarItem
+                key={`${item.title}-${i}`}
+                link={item.path}
+                title={item.title}
+                targetBlank={item.targetBlank}
+              >
+                {item.name}
+              </NavBarItem>
+            ))}
         </NavbarContent>
+        {/* session */}
         <NavbarContent justify="end">
           {username ? (
             // if the user is logged
@@ -198,32 +211,39 @@ export default function NavBar() {
             </>
           )}
         </NavbarContent>
+
+        {/* responsive */}
         <NavbarMenu>
-          {menuItems.map(({ name, path, targetBlank, title }, index) => (
-            <NavbarMenuItem
-              key={`${name}-${index}`}
-              isActive={pathname === path}
-            >
-              <Link
-                color={
-                  index === 2
-                    ? "warning"
-                    : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-                }
-                className="w-full"
-                title={title}
-                href={path}
-                target={targetBlank ? "_blank" : "_self"}
-                // size="lg"
+          {menuItems
+            .filter((item) => {
+              return username ? item : !item.auth;
+            })
+            .map(({ name, path, targetBlank, title }, index) => (
+              <NavbarMenuItem
+                key={`${name}-${index}`}
+                isActive={pathname === path}
               >
-                {name}
-              </Link>
-            </NavbarMenuItem>
-          ))}
+                <Link
+                  color={
+                    index === 2
+                      ? "warning"
+                      : index === menuItems.length - 1
+                      ? "danger"
+                      : "foreground"
+                  }
+                  className="w-full"
+                  title={title}
+                  href={path}
+                  target={targetBlank ? "_blank" : "_self"}
+                  // size="lg"
+                >
+                  {name}
+                </Link>
+              </NavbarMenuItem>
+            ))}
         </NavbarMenu>
       </Navbar>
+      {/* modal */}
       <Modal backdrop="opaque" isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
