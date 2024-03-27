@@ -11,10 +11,13 @@ export const auth = (
   next: NextFunction
 ) => {
   try {
+    if (!req.headers.authorization)
+      errorResponse(res, 404, "Missing session token");
+
     const jwtByUser = req.headers.authorization || "";
     const jwt = jwtByUser.split(" ").pop();
 
-    const isUser = verifyToken(`${jwt}`);
+    const isUser = verifyToken(String(jwt));
     (req as RequestSessionType).user = isUser;
 
     next();

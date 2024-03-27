@@ -28,11 +28,11 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
-import { logOut } from "@/redux/userSlice";
-import { deleteUserData } from "@/lib/user-actions";
+import { logOut, logIn } from "@/redux/userSlice";
+import { deleteUserData, getUserData } from "@/lib/user-actions";
 
 import NavBarItem from "../navBarItem/NavBarItem";
 import { RootState } from "@/redux/store";
@@ -75,6 +75,14 @@ export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // user profile
   const { username, email } = useSelector((state: RootState) => state.user);
+
+  useEffect(() => {
+    (async () => {
+      const userData = await getUserData();
+
+      if (userData) dispatch(logIn(userData));
+    })();
+  }, []);
 
   const handleLogOut = async () => {
     deleteUserData();

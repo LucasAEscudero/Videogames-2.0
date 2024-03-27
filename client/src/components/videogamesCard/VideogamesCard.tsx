@@ -2,10 +2,17 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Card, CardBody, CardFooter, Button } from "@nextui-org/react";
-import { IoLibrary } from "react-icons/io5";
-
-import { videogameType } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useEffect, useState } from "react";
+import {
+  fetchUserLibrary,
+  compareVideogamesInLibrary,
+} from "@/lib/videogames-actions";
+
+import { HiCheck, HiOutlinePlus } from "react-icons/hi";
+import { videogameType } from "@/lib/types";
 
 interface videogameCardType extends videogameType {
   index: number;
@@ -18,6 +25,28 @@ export default function VideogamesCard({
   index,
 }: videogameCardType) {
   const router = useRouter();
+  const { username } = useSelector((state: RootState) => state.user);
+  const [isUserLibrary, setIsUserLibrary] = useState<boolean>(false);
+
+  const handleLibraryButton = () => {
+    if (!username) {
+      // modal
+    } else {
+      if (isUserLibrary) {
+        fetchUserLibrary(id, "DELETE");
+        setIsUserLibrary(false);
+      } else {
+        fetchUserLibrary(id, "POST");
+        setIsUserLibrary(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      setIsUserLibrary(await compareVideogamesInLibrary(id));
+    })();
+  }, []);
 
   return (
     <motion.article
@@ -54,12 +83,18 @@ export default function VideogamesCard({
           <Button
             size="sm"
             color="success"
-            title="Add this videogame at your library"
+            title={
+              isUserLibrary
+                ? "Remove this videogame at your library"
+                : "Add this videogame at your library"
+            }
+            onClick={handleLibraryButton}
           >
-            <span className="hidden">
-              <IoLibrary /> |
-            </span>{" "}
-            +
+            {isUserLibrary ? (
+              <HiCheck size={16} />
+            ) : (
+              <HiOutlinePlus size={14} />
+            )}
           </Button>
         </CardFooter>
       </Card>

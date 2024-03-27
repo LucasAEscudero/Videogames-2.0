@@ -89,7 +89,7 @@ export default function LogIn() {
             className="mt-5"
             disabled={!watch("identifier") || !watch("password")}
           >
-            Register
+            Enter
           </Button>
         </form>
         <p className="text-center text-sm">
