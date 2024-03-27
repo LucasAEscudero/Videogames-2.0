@@ -1,24 +1,36 @@
 import { Router } from "express";
+import { auth } from "../middleware/session";
 import {
-  getUsersHandler,
   registerUserHandler,
   loginUserHandler,
+} from "../handlers/usersSession.handler";
+import {
+  getUsersHandler,
   putUserHandler,
   deleteUserHandler,
-  postUserVideogameHandler,
 } from "../handlers/users.handler";
-import { checkToken } from "../middleware/session";
+import {
+  getUserVideogamesHandler,
+  postUserVideogameHandler,
+  deleteUserVideogameHandler,
+} from "../handlers/usersLibrary.handler";
 
 const usersRouter = Router();
 
-// users
+// general - admin
 usersRouter.get("/", getUsersHandler);
-usersRouter.post("/", postUserVideogameHandler);
-usersRouter.put("/", checkToken, putUserHandler);
-usersRouter.delete("/:id", deleteUserHandler);
+usersRouter.delete("/", deleteUserHandler);
 
 // authentication
 usersRouter.post("/signup", registerUserHandler);
 usersRouter.post("/login", loginUserHandler);
+
+// users profile
+usersRouter.put("/", auth, putUserHandler);
+
+// library
+usersRouter.get("/library", auth, getUserVideogamesHandler);
+usersRouter.post("/library/:videogame", auth, postUserVideogameHandler);
+usersRouter.delete("/library/:videogame", auth, deleteUserVideogameHandler);
 
 export default usersRouter;

@@ -1,5 +1,5 @@
-import Users from "../../models/users.model";
-import { ClientError } from "../../utils/errors";
+import Users from "../../../models/users.model";
+import { ClientError } from "../../../utils/errors";
 
 export default async function postUserVideogameController(
   id: string,
@@ -17,10 +17,10 @@ export default async function postUserVideogameController(
       user.set({
         library: [...user.library, newVideogameId],
       });
-    } else return { error: true };
+    } else return false;
   }
 
   await user.save();
 
-  return { error: false };
+  return true;
 }

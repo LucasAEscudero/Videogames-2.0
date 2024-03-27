@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
-import Users from "../../models/users.model";
-import { ClientError } from "../../utils/errors";
+import Users from "../../../models/users.model";
+import { ClientError } from "../../../utils/errors";
 
 export default async function registerUserController(
   username: string,

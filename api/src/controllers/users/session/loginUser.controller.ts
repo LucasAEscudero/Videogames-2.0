@@ -1,6 +1,6 @@
-import Users from "../../models/users.model";
-import { generateToken } from "../../utils/jwt";
-import { ClientError } from "../../utils/errors";
+import Users from "../../../models/users.model";
+import { generateToken } from "../../../utils/jwt";
+import { ClientError } from "../../../utils/errors";
 import { Op } from "sequelize";
 
 export default async function loginUserController(

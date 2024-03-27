@@ -3,8 +3,9 @@ import { verifyToken } from "../utils/jwt";
 import { Request, Response, NextFunction } from "express";
 import { getErrorName } from "../utils/errors";
 import { errorResponse } from "../utils/response";
+import { RequestSessionType } from "../utils/types";
 
-export const checkToken = (
+export const auth = (
   req: Request & { user?: JwtPayload | string },
   res: Response,
   next: NextFunction
@@ -14,7 +15,7 @@ export const checkToken = (
     const jwt = jwtByUser.split(" ").pop();
 
     const isUser = verifyToken(`${jwt}`);
-    req.user = isUser;
+    (req as RequestSessionType).user = isUser;
 
     next();
   } catch (error) {

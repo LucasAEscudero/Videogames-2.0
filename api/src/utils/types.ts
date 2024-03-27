@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 // api types
 // results: genres[] | platforms[]
 export interface fetchApiDataType {
@@ -83,3 +85,7 @@ export interface UserType {
   password: string;
   library: string[];
 }
+
+export type RequestSessionType = Request & {
+  user?: any;
+};
